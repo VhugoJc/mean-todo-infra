@@ -12,3 +12,10 @@ private_subnet_cidr = "10.0.2.0/24"
 # EC2 Configuration
 ami_id = "ami-0c55b159cbfafe1f0"  # Amazon Linux 2 in eu-west-1
 instance_type = "t2.micro"
+
+# Database Configuration
+mongodb_ami_id = "ami-01dd271720c1ba44f"  # Amazon Linux 2 in eu-west-1 (update for your region)
+key_name = "your-key-pair-name"  # Replace with your actual EC2 Key Pair
+mongodb_instance_type = "t3.medium"
+mongodb_storage_size = 50
+mongodb_version = "6.0"

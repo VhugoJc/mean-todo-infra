@@ -24,19 +24,20 @@ module "network" {
 
 module "security" {
   source = "./modules/security"
-  
+
   project_name = var.project_name
   vpc_id       = module.network.vpc_id
+  vpc_cidr     = var.vpc_cidr
 }
 
-resource "aws_instance" "example" {
-  ami                         = var.ami_id
-  instance_type               = var.instance_type
-  subnet_id                   = module.network.public_subnet_ids[0]
-  vpc_security_group_ids      = [module.security.web_security_group_id]
-  associate_public_ip_address = true
+module "database" {
+  source = "./modules/database"
 
-  tags = {
-    Name = "${var.project_name}-instance"
-  }
+  project_name               = var.project_name
+  private_subnet_id          = module.network.private_subnet_ids[0]
+  database_security_group_id = module.security.database_security_group_id
+  mongodb_ami_id             = var.mongodb_ami_id
+  mongodb_instance_type      = var.mongodb_instance_type
+  mongodb_storage_size       = var.mongodb_storage_size
+  mongodb_version            = var.mongodb_version
 }

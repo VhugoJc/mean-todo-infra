@@ -1,10 +1,15 @@
 variable "project_name" {
-  description = "Nombre del proyecto"
+  description = "Name of the project"
   type        = string
 }
 
 variable "vpc_id" {
-  description = "ID de la VPC"
+  description = "ID of the VPC"
+  type        = string
+}
+
+variable "vpc_cidr" {
+  description = "CIDR block of the VPC"
   type        = string
 }
 
