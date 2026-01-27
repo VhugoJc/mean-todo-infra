@@ -41,3 +41,16 @@ module "database" {
   mongodb_storage_size       = var.mongodb_storage_size
   mongodb_version            = var.mongodb_version
 }
+
+module "compute" {
+  source = "./modules/compute"
+  
+  project_name          = var.project_name
+  public_subnet_id      = module.network.public_subnet_ids[0]
+  web_security_group_id = module.security.web_security_group_id
+  app_ami_id            = var.ami_id
+  app_instance_type     = var.app_instance_type
+  app_storage_size      = var.app_storage_size
+  github_repo_url       = var.github_repo_url
+  app_directory         = var.app_directory
+}

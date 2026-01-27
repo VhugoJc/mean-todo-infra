@@ -72,3 +72,29 @@ variable "mongodb_version" {
   type        = string
   default     = "6.0"
 }
+
+# Application Server Configuration
+variable "app_instance_type" {
+  description = "Instance type for application server"
+  type        = string
+  default     = "t3.medium"
+}
+
+variable "app_storage_size" {
+  description = "Storage size for application server (GB)"
+  type        = number
+  default     = 20
+}
+
+# Application Deployment Configuration
+variable "github_repo_url" {
+  description = "GitHub repository URL for the MEAN todo application"
+  type        = string
+  default     = "https://github.com/VhugoJc/mearn-todo-app.git"
+}
+
+variable "app_directory" {
+  description = "Directory name within the repository containing the frontend application"
+  type        = string
+  default     = "frontend"
+}

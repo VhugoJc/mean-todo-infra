@@ -19,6 +19,32 @@ output "web_security_group_id" {
   value       = module.security.web_security_group_id
 }
 
+# Application Server Information
+output "app_instance_id" {
+  description = "ID of the application server instance"
+  value       = module.compute.app_instance_id
+}
+
+output "app_public_ip" {
+  description = "Public IP of the application server"
+  value       = module.compute.app_public_ip
+}
+
+output "app_private_ip" {
+  description = "Private IP of the application server"
+  value       = module.compute.app_private_ip
+}
+
+output "app_public_dns" {
+  description = "Public DNS of the application server"
+  value       = module.compute.app_public_dns
+}
+
+output "frontend_url" {
+  description = "Frontend application URL"
+  value       = module.compute.frontend_url
+}
+
 # Database Information
 output "mongodb_instance_id" {
   description = "ID of the MongoDB instance"
