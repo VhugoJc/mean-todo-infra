@@ -38,8 +38,17 @@ module "database" {
   database_security_group_id = module.security.database_security_group_id
   mongodb_ami_id             = var.mongodb_ami_id
   mongodb_instance_type      = var.mongodb_instance_type
-  mongodb_storage_size       = var.mongodb_storage_size
   mongodb_version            = var.mongodb_version
+  mongo_admin_user           = var.mongo_admin_user
+  mongo_admin_password       = var.mongo_admin_password
+  mongo_db_name              = var.mongo_db_name
+
+  # Explicit dependency to ensure private networking is fully ready
+  # before creating MongoDB instance. This prevents MongoDB from being
+  # created before NAT Gateway and private routes are functional.
+  depends_on = [
+    module.network
+  ]
 }
 
 module "compute" {
@@ -53,4 +62,14 @@ module "compute" {
   app_storage_size      = var.app_storage_size
   github_repo_url       = var.github_repo_url
   app_directory         = var.app_directory
+  
+  # Database connection info
+  mongodb_private_ip    = module.database.mongodb_private_ip
+  mongodb_instance_id   = module.database.mongodb_instance_id
+  mongo_admin_user      = var.mongo_admin_user
+  mongo_admin_password  = var.mongo_admin_password
+  mongo_db_name         = var.mongo_db_name
+  
+  # Ensure compute waits for database to be fully ready
+  depends_on = [module.database]
 }

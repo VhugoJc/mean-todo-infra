@@ -6,16 +6,11 @@ resource "aws_instance" "mongodb" {
   
   vpc_security_group_ids = [var.database_security_group_id]
 
-  # Additional storage for MongoDB data
-  ebs_block_device {
-    device_name = "/dev/sdf"
-    volume_type = "gp3"
-    volume_size = var.mongodb_storage_size
-    encrypted   = true
-  }
-
-  user_data_base64 = base64encode(templatefile("${path.module}/userdata.sh", {
+  user_data_base64 = base64encode(templatefile("${path.module}/userdata_simple.sh", {
     mongodb_version = var.mongodb_version
+    mongo_admin_user = var.mongo_admin_user
+    mongo_admin_password = var.mongo_admin_password
+    mongo_db_name = var.mongo_db_name
   }))
 
   tags = {

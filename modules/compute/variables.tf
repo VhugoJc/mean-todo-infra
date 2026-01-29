@@ -58,8 +58,31 @@ variable "deployment_mode" {
   }
 }
 
-variable "key_name" {
-  description = "EC2 Key Pair name for SSH access (optional for debugging)"
+# Database connection variables
+variable "mongodb_private_ip" {
+  description = "Private IP address of the MongoDB instance"
   type        = string
-  default     = ""
+}
+
+variable "mongo_admin_user" {
+  description = "MongoDB admin username"
+  type        = string
+  default     = "admin"
+}
+
+variable "mongo_admin_password" {
+  description = "MongoDB admin password"
+  type        = string
+  sensitive   = true
+}
+
+variable "mongo_db_name" {
+  description = "MongoDB database name"
+  type        = string
+  default     = "meantodo"
+}
+
+variable "mongodb_instance_id" {
+  description = "MongoDB instance ID for dependency management"
+  type        = string
 }

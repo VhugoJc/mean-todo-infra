@@ -23,6 +23,21 @@ variable "mongodb_ami_id" {
   default     = "ami-0c55b159cbfafe1f0" # Amazon Linux 2 - update with correct AMI for your region
 }
 
+variable "mongo_admin_user" {
+  description = "MongoDB admin username"
+  type        = string
+}
+
+variable "mongo_admin_password" {
+  description = "MongoDB admin password"
+  type        = string
+}
+
+variable "mongo_db_name" {
+  description = "Name of the MongoDB database to create"
+  type        = string
+}
+
 variable "instance_type" {
   description = "Tipo de instancia EC2"
   type        = string

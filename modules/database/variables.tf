@@ -24,14 +24,26 @@ variable "mongodb_instance_type" {
   default     = "t3.medium"
 }
 
-variable "mongodb_storage_size" {
-  description = "Storage size for MongoDB data volume (GB)"
-  type        = number
-  default     = 50
-}
-
 variable "mongodb_version" {
   description = "MongoDB version to install"
   type        = string
   default     = "6.0"
+}
+
+variable "mongo_admin_user" {
+  description = "MongoDB admin username"
+  type        = string
+  default     = "admin"
+}
+
+variable "mongo_admin_password" {
+  description = "MongoDB admin password"
+  type        = string
+  default     = "SecureP@ssw0rd!"
+}
+
+variable "mongo_db_name" {
+  description = "Name of the MongoDB database to create"
+  type        = string
+  default     = "todos"
 }

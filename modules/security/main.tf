@@ -31,6 +31,15 @@ resource "aws_security_group" "web" {
     cidr_blocks = ["0.0.0.0/0"]  # Restrict this to your IP for security
   }
 
+  # Backend API port (for internal communication)
+  ingress {
+    description = "Backend API"
+    from_port   = 3000
+    to_port     = 3000
+    protocol    = "tcp"
+    cidr_blocks = [var.vpc_cidr]  # Allow from within VPC
+  }
+
   # All outbound traffic
   egress {
     from_port   = 0
@@ -58,6 +67,24 @@ resource "aws_security_group" "database" {
     to_port         = 27017
     protocol        = "tcp"
     security_groups = [aws_security_group.web.id]
+  }
+
+  # SSH access for debugging (optional - remove in production)
+  ingress {
+    description = "SSH"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = [var.vpc_cidr]  # Allow SSH from within VPC only
+  }
+
+  # HTTP access for status endpoint
+  ingress {
+    description = "HTTP Status"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = [var.vpc_cidr]  # Allow from within VPC
   }
 
   # All outbound traffic
