@@ -22,3 +22,8 @@ output "nat_gateway_ids" {
   description = "IDs of the NAT Gateways"
   value       = module.vpc.natgw_ids
 }
+
+output "nat_public_ips" {
+  description = "Public IPs of the NAT Gateways"
+  value       = module.vpc.nat_public_ips
+}

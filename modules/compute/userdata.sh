@@ -164,7 +164,7 @@ fi
 
 # Start Angular development server
 status "Starting Angular development server"
-nohup ng serve --host 0.0.0.0 --port 4200 > /var/log/angular.log 2>&1 &
+nohup ng serve --host 0.0.0.0 --port 4200 --disable-host-check > /var/log/angular.log 2>&1 &
 
 status "Angular dev server started on port 4200"
 

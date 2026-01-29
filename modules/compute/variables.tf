@@ -3,9 +3,15 @@ variable "project_name" {
   type        = string
 }
 
-variable "public_subnet_id" {
-  description = "Public subnet ID for application server"
-  type        = string
+variable "instance_count" {
+  description = "Number of application server instances"
+  type        = number
+  default     = 2
+}
+
+variable "public_subnet_ids" {
+  description = "List of public subnet IDs for application servers"
+  type        = list(string)
 }
 
 variable "web_security_group_id" {

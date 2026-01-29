@@ -1,24 +1,19 @@
-output "app_instance_id" {
-  description = "Application server instance ID"
-  value       = aws_instance.app_server.id
+output "app_instance_ids" {
+  description = "Application server instance IDs"
+  value       = aws_instance.app_server[*].id
 }
 
-output "app_public_ip" {
-  description = "Application server public IP address"
-  value       = aws_instance.app_server.public_ip
+output "app_public_ips" {
+  description = "Application server public IP addresses"
+  value       = aws_instance.app_server[*].public_ip
 }
 
-output "app_private_ip" {
-  description = "Application server private IP address"
-  value       = aws_instance.app_server.private_ip
+output "app_private_ips" {
+  description = "Application server private IP addresses"
+  value       = aws_instance.app_server[*].private_ip
 }
 
-output "app_public_dns" {
-  description = "Application server public DNS name"
-  value       = aws_instance.app_server.public_dns
-}
-
-output "frontend_url" {
-  description = "Frontend application URL"
-  value       = "http://${aws_instance.app_server.public_ip}"
+output "app_public_dns_names" {
+  description = "Application server public DNS names"
+  value       = aws_instance.app_server[*].public_dns
 }

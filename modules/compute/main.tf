@@ -1,8 +1,10 @@
-# Frontend/Backend Application Server
+# Frontend/Backend Application Servers
 resource "aws_instance" "app_server" {
+  count = var.instance_count
+
   ami           = var.app_ami_id
   instance_type = var.app_instance_type
-  subnet_id     = var.public_subnet_id
+  subnet_id     = var.public_subnet_ids[count.index % length(var.public_subnet_ids)]
   
   vpc_security_group_ids      = [var.web_security_group_id]
   associate_public_ip_address = true
@@ -27,7 +29,7 @@ resource "aws_instance" "app_server" {
   }))
 
   tags = {
-    Name = "${var.project_name}-app-server"
+    Name = "${var.project_name}-app-server-${count.index + 1}"
     Type = "Application"
   }
 }

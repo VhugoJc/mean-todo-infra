@@ -8,7 +8,8 @@ The infrastructure includes:
 - **Network Module**: VPC with public and private subnets, Internet Gateway, and NAT Gateway for secure connectivity
 - **Security Module**: Separate security groups for web servers and database with proper access controls
 - **Database Module**: MongoDB instance in private subnet with automated setup and configuration
-- **Compute Module**: Frontend/Backend application server in public subnet with dynamic environment configuration
+- **Compute Module**: Multiple application server instances in public subnets with dynamic environment configuration
+- **Load Balancer Module**: Application Load Balancer with health checks and automatic traffic distribution
 
 ## Project Structure
 
@@ -32,11 +33,15 @@ The infrastructure includes:
     │   ├── variables.tf      # Database module variables
     │   ├── outputs.tf        # Database module outputs
     │   └── userdata.sh       # MongoDB installation and setup script
-    └── compute/               # Application server resources
-        ├── main.tf           # Frontend/Backend EC2 instance
-        ├── variables.tf      # Compute module variables
-        ├── outputs.tf        # Compute module outputs
-        └── userdata.sh       # Application setup and configuration script
+    ├── compute/               # Application server resources
+    │   ├── main.tf           # Multiple EC2 instances for applications
+    │   ├── variables.tf      # Compute module variables
+    │   ├── outputs.tf        # Compute module outputs
+    │   └── userdata.sh       # Application setup and configuration script
+    └── load_balancer/         # Load balancing resources
+        ├── main.tf           # Application Load Balancer and target groups
+        ├── variables.tf      # Load balancer module variables
+        └── outputs.tf        # Load balancer module outputs
 ```
 
 ## Module Design
@@ -66,8 +71,8 @@ The infrastructure includes:
 - **Dependencies**: Requires network and security modules
 
 ### Compute Module
-- **Purpose**: Manages application server for frontend and backend
-- **Resources**: EC2 instance with full MEAN stack deployment
+- **Purpose**: Manages multiple application server instances for frontend and backend
+- **Resources**: Multiple EC2 instances with full MEAN stack deployment
 - **Features**:
   - Automated Node.js, Angular CLI, and MongoDB client installation
   - Dynamic frontend environment configuration
@@ -75,6 +80,17 @@ The infrastructure includes:
   - Nginx reverse proxy configuration
   - Backend API with MongoDB connectivity
   - Status monitoring and debugging endpoints
+- **Scalability**: Configurable number of instances for load distribution
+
+### Load Balancer Module
+- **Purpose**: Manages load balancing and high availability for application servers
+- **Resources**: Application Load Balancer, Target Groups, and Health Checks
+- **Features**:
+  - Automatic traffic distribution across multiple instances
+  - Health checking with configurable parameters
+  - High availability and fault tolerance
+  - Single DNS endpoint for application access
+- **Dependencies**: Requires compute instances and network/security modules
 
 ## Key Features
 

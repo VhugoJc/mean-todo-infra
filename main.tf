@@ -18,8 +18,8 @@ module "network" {
   project_name         = var.project_name
   vpc_cidr             = var.vpc_cidr
   availability_zones   = var.availability_zones
-  public_subnet_cidrs  = [var.public_subnet_cidr]
-  private_subnet_cidrs = [var.private_subnet_cidr]
+  public_subnet_cidrs  = var.public_subnet_cidrs
+  private_subnet_cidrs = var.private_subnet_cidrs
 }
 
 module "security" {
@@ -55,7 +55,8 @@ module "compute" {
   source = "./modules/compute"
   
   project_name          = var.project_name
-  public_subnet_id      = module.network.public_subnet_ids[0]
+  instance_count        = var.instance_count
+  public_subnet_ids     = module.network.public_subnet_ids
   web_security_group_id = module.security.web_security_group_id
   app_ami_id            = var.ami_id
   app_instance_type     = var.app_instance_type
@@ -72,4 +73,26 @@ module "compute" {
   
   # Ensure compute waits for database to be fully ready
   depends_on = [module.database]
+}
+
+module "load_balancer" {
+  source = "./modules/load_balancer"
+  
+  project_name            = var.project_name
+  vpc_id                  = module.network.vpc_id
+  public_subnet_ids       = module.network.public_subnet_ids
+  web_security_group_id   = module.security.web_security_group_id
+  target_instance_ids     = module.compute.app_instance_ids
+  
+  # Load balancer configuration
+  target_port             = 80
+  listener_port           = 80
+  listener_protocol       = "HTTP"
+  
+  # Health check configuration
+  health_check_path       = "/"
+  health_check_matcher    = "200"
+  
+  # Ensure load balancer waits for compute instances to be created
+  depends_on = [module.compute]
 }

@@ -47,7 +47,7 @@ variable "instance_type" {
 variable "availability_zones" {
   description = "Zonas de disponibilidad para la VPC"
   type        = list(string)
-  default     = ["eu-west-1a", "eu-west-1b"]
+  default     = ["us-east-1a", "us-east-1b"]
 }
 
 # RED
@@ -57,14 +57,27 @@ variable "vpc_cidr" {
   default     = "10.0.0.0/16"
 }
 
+variable "public_subnet_cidrs" {
+  description = "CIDRs de las subredes públicas"
+  type        = list(string)
+  default     = ["10.0.1.0/24", "10.0.3.0/24"]
+}
+
+variable "private_subnet_cidrs" {
+  description = "CIDRs de las subredes privadas"
+  type        = list(string)
+  default     = ["10.0.2.0/24", "10.0.4.0/24"]
+}
+
+# Backwards compatibility - keeping old variables but deprecated
 variable "public_subnet_cidr" {
-  description = "CIDR de la subred pública"
+  description = "CIDR de la subred pública (deprecated - use public_subnet_cidrs)"
   type        = string
   default     = "10.0.1.0/24"
 }
 
 variable "private_subnet_cidr" {
-  description = "CIDR de la subred privada"
+  description = "CIDR de la subred privada (deprecated - use private_subnet_cidrs)"
   type        = string
   default     = "10.0.2.0/24"
 }
@@ -112,4 +125,10 @@ variable "app_directory" {
   description = "Directory name within the repository containing the frontend application"
   type        = string
   default     = "frontend"
+}
+
+variable "instance_count" {
+  description = "Number of application server instances to create"
+  type        = number
+  default     = 2
 }
