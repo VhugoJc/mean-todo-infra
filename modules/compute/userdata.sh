@@ -137,7 +137,33 @@ fi
 #################################
 status "Setting up frontend"
 cd $APP_DIR/frontend
+
+# Create .env file with backend API URL
+status "Creating frontend .env file"
+PUBLIC_IP=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)
+API_URL="http://$PUBLIC_IP/api"
+status "Setting API_URL to: $API_URL"
+
+cat > .env <<EOF
+# Backend API URL - update this to match your backend server
+API_URL=$API_URL
+EOF
+
+# Install dependencies
 npm install
+
+# Run the setenv.js script to configure environment
+status "Running setenv.js script to configure environment"
+if [ -f "scripts/setenv.js" ]; then
+    node scripts/setenv.js
+    status "✅ Environment configuration completed with scripts/setenv.js"
+else
+    status "⚠️ setenv.js script not found in scripts/ directory"
+    ls -la scripts/ || status "scripts/ directory does not exist"
+fi
+
+# Start Angular development server
+status "Starting Angular development server"
 nohup ng serve --host 0.0.0.0 --port 4200 > /var/log/angular.log 2>&1 &
 
 status "Angular dev server started on port 4200"

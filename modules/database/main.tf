@@ -6,7 +6,7 @@ resource "aws_instance" "mongodb" {
   
   vpc_security_group_ids = [var.database_security_group_id]
 
-  user_data_base64 = base64encode(templatefile("${path.module}/userdata_simple.sh", {
+  user_data_base64 = base64encode(templatefile("${path.module}/userdata.sh", {
     mongodb_version = var.mongodb_version
     mongo_admin_user = var.mongo_admin_user
     mongo_admin_password = var.mongo_admin_password
